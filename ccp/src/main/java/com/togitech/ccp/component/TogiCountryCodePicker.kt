@@ -184,29 +184,7 @@ fun TogiCountryCodePicker(
             onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
         },
         modifier = modifier
-            .fillMaxWidth()
-            .focusable()
-            .autofill(
-                autofillTypes = listOf(AutofillType.PhoneNumberNational),
-                onFill = { filledPhoneNumber ->
-                    val preFilteredPhoneNumber =
-                        phoneNumberTransformation.preFilter(filledPhoneNumber)
-                    phoneNumber = TextFieldValue(
-                        text = preFilteredPhoneNumber,
-                        selection = TextRange(preFilteredPhoneNumber.length),
-                    )
-                    isNumberValid = validatePhoneNumber(
-                        fullPhoneNumber = country.countryPhoneCode + phoneNumber.text,
-                    )
-                    onValueChange(country.countryPhoneCode to phoneNumber.text, isNumberValid)
-                    keyboardController?.hide()
-                    coroutineScope.launch {
-                        focusRequester.safeFreeFocus()
-                    }
-                },
-                focusRequester = focusRequester,
-            )
-            .focusRequester(focusRequester = focusRequester),
+            .fillMaxWidth(),
         enabled = enabled,
         textStyle = textStyle,
         label = label,
