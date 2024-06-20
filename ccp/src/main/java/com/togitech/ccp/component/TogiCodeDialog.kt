@@ -1,5 +1,6 @@
 package com.togitech.ccp.component
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +15,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,8 +48,6 @@ internal fun TogiCodeDialog(
     backgroundColor: Color,
 ) {
     val context = LocalContext.current
-
-    var country by remember { mutableStateOf(selectedCountry) }
     var isOpenDialog by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
     val countryList by remember(context, includeOnly) {
@@ -73,7 +73,7 @@ internal fun TogiCodeDialog(
             modifier = Modifier.padding(DEFAULT_PADDING),
             showCountryCode = showCountryCode,
             showFlag = showFlag,
-            country = country,
+            country = selectedCountry,
             textStyle = textStyle,
         )
 
@@ -85,7 +85,6 @@ internal fun TogiCodeDialog(
                 onDismissRequest = { isOpenDialog = false },
                 onSelect = { countryItem ->
                     onCountryChange(countryItem)
-                    country = countryItem
                     isOpenDialog = false
                 },
                 countryList = countryList.toImmutableList(),
@@ -107,11 +106,12 @@ private fun CountryRow(
     country: CountryData,
     textStyle: TextStyle,
     modifier: Modifier = Modifier,
-) = Row(
+) { Row(
     modifier = modifier,
     horizontalArrangement = Arrangement.SpaceBetween,
     verticalAlignment = Alignment.CenterVertically,
 ) {
+
     Text(
         text = emojiCodeText(
             showFlag = showFlag,
@@ -126,7 +126,7 @@ private fun CountryRow(
         contentDescription = null,
         tint = textStyle.color,
     )
-}
+}}
 
 @Composable
 private fun emojiCodeText(

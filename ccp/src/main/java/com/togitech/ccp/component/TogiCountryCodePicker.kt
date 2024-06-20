@@ -18,6 +18,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -129,7 +130,7 @@ fun TogiCountryCodePicker(
         initialPhoneNumber
     }
 
-    var phoneNumber by remember {
+    var phoneNumber by remember(initialPhoneNumber) {
         mutableStateOf(
             TextFieldValue(
                 text = phoneNumberWithoutCode.orEmpty(),
@@ -139,11 +140,8 @@ fun TogiCountryCodePicker(
     }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    var country: CountryData by rememberSaveable(
-        context,
-        countryCode,
-        initialCountryPhoneCode,
-        initialCountryIsoCode,
+    var country: CountryData by remember(
+initialCountryPhoneCode,initialCountryIsoCode
     ) {
         mutableStateOf(
             configureInitialCountry(
@@ -154,6 +152,9 @@ fun TogiCountryCodePicker(
             ),
         )
     }
+/*
+*
+* */
 
     val phoneNumberTransformation = remember(country) {
         PhoneNumberTransformation(country.countryIso, context)
